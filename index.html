@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sach.in | Write</title>
+    <!-- Remix Icons for Minimalist B&W Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Google Fonts: Inter for clean typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- html2pdf.js for Client-Side PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Top Action Bar -->
+    <div class="top-bar">
+        <div class="brand">
+            <i class="ri-quill-pen-line"></i>
+            <span>Sach.in</span>
+        </div>
+        <div class="actions">
+            <button id="add-page-btn" title="Add Page"><i class="ri-file-add-line"></i></button>
+            <button id="add-list-page-btn" title="Add List Page"><i class="ri-list-check"></i></button>
+            <button id="add-image-btn" title="Add Image Page"><i class="ri-image-add-line"></i></button>
+            <input type="file" id="image-upload" accept="image/*" multiple style="display: none;">
+            <button id="export-pdf-btn" title="Export PDF"><i class="ri-file-pdf-line"></i></button>
+            <button id="toggle-theme-btn" title="Toggle Dark/Light Mode"><i class="ri-contrast-line"></i></button>
+        </div>
+    </div>
+
+    <!-- Floating Formatting Toolbar -->
+    <div class="formatting-toolbar" id="toolbar">
+        <button data-command="bold" title="Bold"><i class="ri-bold"></i></button>
+        <button data-command="italic" title="Italic"><i class="ri-italic"></i></button>
+        <button data-command="underline" title="Underline"><i class="ri-underline"></i></button>
+        <div class="divider"></div>
+        <button data-command="formatBlock" data-value="H1" title="Heading 1"><i class="ri-h-1"></i></button>
+        <button data-command="formatBlock" data-value="H2" title="Heading 2"><i class="ri-h-2"></i></button>
+        <button data-command="formatBlock" data-value="P" title="Paragraph"><i class="ri-paragraph"></i></button>
+        <div class="divider"></div>
+        <button data-command="justifyLeft" title="Align Left"><i class="ri-align-left"></i></button>
+        <button data-command="justifyCenter" title="Align Center"><i class="ri-align-center"></i></button>
+        <button data-command="justifyRight" title="Align Right"><i class="ri-align-right"></i></button>
+        <div class="divider"></div>
+        <button data-command="insertUnorderedList" title="Bullet List"><i class="ri-list-unordered"></i></button>
+        <button data-command="insertOrderedList" title="Numbered List"><i class="ri-list-ordered"></i></button>
+    </div>
+
+    <!-- Main Document Container -->
+    <div class="document-container" id="editor-container">
+        <!-- Pages will be dynamically created here -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
