@@ -3,207 +3,245 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Sach.in | The Ultimate Writing Experience</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sach.in — List Creator</title>
     <meta name="description"
-        content="A premium, distraction-free writing environment with real-time Peer-to-Peer collaboration.">
+        content="Create beautiful, formatted lists and export them as PDF. Minimalist black & white design.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
 </head>
 
-<body class="light-theme">
-    <div id="app">
-        <header id="controls">
-            <div class="control-group">
-                <button id="sidebar-toggle" class="icon-btn" title="Library">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="v-separator"></div>
-                <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
-                    <svg class="sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                        stroke-width="2">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                    <svg class="moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                        stroke-width="2" style="display:none;">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                </button>
-                <div class="p2p-status">
-                    <span id="connection-indicator" class="indicator offline"></span>
-                    <span id="status-text">Sach.in</span>
-                </div>
-            </div>
+<body data-bg="white">
 
-            <div class="control-group center desktop-only">
-                <div id="p2p-id-display" class="hidden">
-                    Code: <span id="my-id">...</span>
-                    <button id="copy-id" class="icon-btn-small" title="Copy Code">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="control-group right">
-                <button id="export-btn" class="icon-btn" title="Export as Markdown">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                </button>
-                <button id="collab-btn">Collaborate</button>
-                <button id="fullscreen-btn" class="icon-btn" title="Focus Mode">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-                    </svg>
-                </button>
-            </div>
-        </header>
-
-        <aside id="sidebar" class="hidden">
-            <div class="sidebar-header">
-                <h3>Library</h3>
-                <button id="new-note-btn" title="New Note">+</button>
-            </div>
-            <div class="sidebar-search">
-                <input type="text" id="note-search" placeholder="Search notes...">
-            </div>
-            <div id="note-list"></div>
-            <div class="sidebar-footer">
-                <button id="help-btn">Shortcuts & Help</button>
-            </div>
-        </aside>
-
-        <main id="editor-container">
-            <div class="editor-wrapper">
-                <div id="toolbar">
-                    <div class="toolbar-group">
-                        <button class="format-btn" data-command="bold" title="Bold"><b>B</b></button>
-                        <button class="format-btn" data-command="italic" title="Italic"><i>I</i></button>
-                        <button class="format-btn" data-command="underline" title="Underline"><u>U</u></button>
-                    </div>
-                    <div class="v-separator"></div>
-                    <div class="toolbar-group">
-                        <button class="format-btn" data-command="formatBlock" data-value="h1">H1</button>
-                        <button class="format-btn" data-command="formatBlock" data-value="h2">H2</button>
-                    </div>
-                    <div class="v-separator"></div>
-                    <div class="toolbar-group">
-                        <button class="format-btn" data-command="justifyLeft" title="Left">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="17" y1="10" x2="3" y2="10"></line>
-                                <line x1="21" y1="6" x2="3" y2="6"></line>
-                                <line x1="21" y1="14" x2="3" y2="14"></line>
-                                <line x1="17" y1="18" x2="3" y2="18"></line>
-                            </svg>
-                        </button>
-                        <button class="format-btn" data-command="justifyCenter" title="Center">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="18" y1="10" x2="6" y2="10"></line>
-                                <line x1="21" y1="6" x2="3" y2="6"></line>
-                                <line x1="21" y1="14" x2="3" y2="14"></line>
-                                <line x1="18" y1="18" x2="6" y2="18"></line>
-                            </svg>
-                        </button>
-                        <button class="format-btn" data-command="justifyFull" title="Justify">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="21" y1="10" x2="3" y2="10"></line>
-                                <line x1="21" y1="6" x2="3" y2="6"></line>
-                                <line x1="21" y1="14" x2="3" y2="14"></line>
-                                <line x1="21" y1="18" x2="3" y2="18"></line>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="v-separator"></div>
-                    <button id="typewriter-toggle" class="format-btn" title="Typewriter Mode">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M2 18h20M2 12h20M2 6h20" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="editor-header">
-                    <input type="text" id="note-title" placeholder="Untitled Story" spellcheck="false">
-                    <div id="stats">
-                        <span id="word-count">0 words</span>
-                        <span id="read-time">0 min</span>
-                    </div>
-                </div>
-
-                <div id="editor-scroller">
-                    <div id="editor" contenteditable="true" placeholder="The blank page is full of possibilities..."
-                        spellcheck="true"></div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Modals -->
-        <div id="p2p-modal" class="modal hidden">
-            <div class="modal-content glass">
-                <h2>Collaborate</h2>
-                <p>Sync your stories in real-time with another writer.</p>
-                <div class="input-group">
-                    <input type="text" id="peer-id-input" placeholder="Enter 6-digit code..." maxlength="6">
-                    <button id="connect-btn" class="primary-btn">Connect</button>
-                </div>
-                <div class="divider">or share yours</div>
-                <div class="my-id-container">
-                    <span id="modal-my-id">...</span>
-                    <button id="share-id-btn" class="secondary-btn">Copy Code</button>
-                </div>
-                <button id="close-modal" class="close-btn">&times;</button>
-            </div>
+    <!-- Header -->
+    <header id="app-header">
+        <div class="header-left">
+            <h1 id="logo">Sach<span class="logo-accent">.in</span></h1>
         </div>
-
-        <div id="help-modal" class="modal hidden">
-            <div class="modal-content glass">
-                <h2>Shortcuts & Tips</h2>
-                <div class="shortcuts-grid">
-                    <div class="shortcut"><span>Ctrl + B</span> Bold</div>
-                    <div class="shortcut"><span>Ctrl + I</span> Italic</div>
-                    <div class="shortcut"><span>Ctrl + U</span> Underline</div>
-                    <div class="shortcut"><span>Ctrl + S</span> Save</div>
-                    <div class="shortcut"><span>Alt + F</span> Focus Mode</div>
-                    <div class="shortcut"><span>Alt + T</span> Typewriter Mode</div>
-                </div>
-                <p class="tip">Tip: Hover at the top in Focus Mode to see the controls.</p>
-                <button id="close-help" class="primary-btn">Got it</button>
-            </div>
+        <div class="header-right">
+            <button id="btn-new-list" class="header-btn" title="New List">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                <span class="btn-label">New</span>
+            </button>
+            <button id="btn-bg-options" class="header-btn" title="Background Options">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <path d="M3 9h18" />
+                    <path d="M9 21V9" />
+                </svg>
+                <span class="btn-label">Background</span>
+            </button>
+            <button id="btn-export-pdf" class="header-btn btn-primary" title="Export as PDF">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                </svg>
+                <span class="btn-label">Export PDF</span>
+            </button>
         </div>
+    </header>
 
-        <div id="toast" class="toast hidden"></div>
+    <!-- Background Options Panel -->
+    <div id="bg-panel" class="panel hidden">
+        <div class="panel-header">
+            <span class="panel-title">Background</span>
+            <button id="btn-close-bg" class="panel-close">&times;</button>
+        </div>
+        <div class="bg-options">
+            <button class="bg-option active" data-bg="white" title="White">
+                <div class="bg-preview bg-white"></div>
+                <span>White</span>
+            </button>
+            <button class="bg-option" data-bg="ivory" title="Ivory">
+                <div class="bg-preview bg-ivory"></div>
+                <span>Ivory</span>
+            </button>
+            <button class="bg-option" data-bg="light-gray" title="Light Gray">
+                <div class="bg-preview bg-light-gray"></div>
+                <span>Light</span>
+            </button>
+            <button class="bg-option" data-bg="grid" title="Grid">
+                <div class="bg-preview bg-grid"></div>
+                <span>Grid</span>
+            </button>
+            <button class="bg-option" data-bg="dots" title="Dots">
+                <div class="bg-preview bg-dots"></div>
+                <span>Dots</span>
+            </button>
+            <button class="bg-option" data-bg="lined" title="Lined">
+                <div class="bg-preview bg-lined"></div>
+                <span>Lined</span>
+            </button>
+            <button class="bg-option" data-bg="dark" title="Dark">
+                <div class="bg-preview bg-dark"></div>
+                <span>Dark</span>
+            </button>
+            <button class="bg-option" data-bg="black" title="Black">
+                <div class="bg-preview bg-black"></div>
+                <span>Black</span>
+            </button>
+        </div>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Formatting Toolbar -->
+    <div id="format-toolbar">
+        <div class="toolbar-group">
+            <button class="fmt-btn" data-cmd="bold" title="Bold (Ctrl+B)">
+                <strong>B</strong>
+            </button>
+            <button class="fmt-btn" data-cmd="italic" title="Italic (Ctrl+I)">
+                <em>I</em>
+            </button>
+            <button class="fmt-btn" data-cmd="underline" title="Underline (Ctrl+U)">
+                <u>U</u>
+            </button>
+            <button class="fmt-btn" data-cmd="strikeThrough" title="Strikethrough">
+                <s>S</s>
+            </button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <select id="font-size-select" class="fmt-select" title="Font Size">
+                <option value="1">Small</option>
+                <option value="3" selected>Normal</option>
+                <option value="5">Large</option>
+                <option value="7">Huge</option>
+            </select>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <button class="fmt-btn" data-cmd="insertUnorderedList" title="Bullet List">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6" />
+                    <line x1="8" y1="12" x2="21" y2="12" />
+                    <line x1="8" y1="18" x2="21" y2="18" />
+                    <circle cx="4" cy="6" r="1" fill="currentColor" />
+                    <circle cx="4" cy="12" r="1" fill="currentColor" />
+                    <circle cx="4" cy="18" r="1" fill="currentColor" />
+                </svg>
+            </button>
+            <button class="fmt-btn" data-cmd="insertOrderedList" title="Numbered List">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="10" y1="6" x2="21" y2="6" />
+                    <line x1="10" y1="12" x2="21" y2="12" />
+                    <line x1="10" y1="18" x2="21" y2="18" /><text x="2" y="8" font-size="8" fill="currentColor"
+                        stroke="none" font-family="Inter">1</text><text x="2" y="14" font-size="8" fill="currentColor"
+                        stroke="none" font-family="Inter">2</text><text x="2" y="20" font-size="8" fill="currentColor"
+                        stroke="none" font-family="Inter">3</text>
+                </svg>
+            </button>
+            <button class="fmt-btn" data-cmd="indent" title="Indent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="4" x2="21" y2="4" />
+                    <line x1="11" y1="9" x2="21" y2="9" />
+                    <line x1="11" y1="14" x2="21" y2="14" />
+                    <line x1="3" y1="19" x2="21" y2="19" />
+                    <polyline points="3 9 7 12 3 15" />
+                </svg>
+            </button>
+            <button class="fmt-btn" data-cmd="outdent" title="Outdent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="4" x2="21" y2="4" />
+                    <line x1="11" y1="9" x2="21" y2="9" />
+                    <line x1="11" y1="14" x2="21" y2="14" />
+                    <line x1="3" y1="19" x2="21" y2="19" />
+                    <polyline points="7 9 3 12 7 15" />
+                </svg>
+            </button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="toolbar-group">
+            <button class="fmt-btn" data-cmd="justifyLeft" title="Align Left">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="15" y2="12" />
+                    <line x1="3" y1="18" x2="18" y2="18" />
+                </svg>
+            </button>
+            <button class="fmt-btn" data-cmd="justifyCenter" title="Align Center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="6" y1="12" x2="18" y2="12" />
+                    <line x1="4" y1="18" x2="20" y2="18" />
+                </svg>
+            </button>
+            <button class="fmt-btn" data-cmd="removeFormat" title="Clear Formatting">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 7V4h16v3" />
+                    <path d="M9 20h6" />
+                    <path d="M12 4v16" />
+                    <line x1="3" y1="21" x2="21" y2="3" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main id="app-main">
+        <div id="list-container">
+            <!-- List Title -->
+            <div id="list-title" contenteditable="true" data-placeholder="Untitled List" spellcheck="false"></div>
+
+            <!-- List Items -->
+            <div id="list-items">
+                <div class="list-item" data-index="0">
+                    <div class="item-handle" title="Drag to reorder">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="9" cy="6" r="1.5" />
+                            <circle cx="15" cy="6" r="1.5" />
+                            <circle cx="9" cy="12" r="1.5" />
+                            <circle cx="15" cy="12" r="1.5" />
+                            <circle cx="9" cy="18" r="1.5" />
+                            <circle cx="15" cy="18" r="1.5" />
+                        </svg>
+                    </div>
+                    <label class="item-checkbox">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="item-content" contenteditable="true" data-placeholder="Type something..."></div>
+                    <button class="item-delete" title="Delete item">&times;</button>
+                </div>
+            </div>
+
+            <!-- Add Item Button -->
+            <button id="btn-add-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add item
+            </button>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden"></div>
+
+    <script src="app.js"></script>
 </body>
 
 </html>
